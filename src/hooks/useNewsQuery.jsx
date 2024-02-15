@@ -1,11 +1,11 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CategoryContext } from "../context";
 
 const useNewsQuery = () => {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  // for checking value is available or not from searchbar or navigation clicked or not
+ 
   const { selectedCategory, searchTerm } = useContext(CategoryContext);
 
   const fetchNewsData = async (queryType, queryValue) => {
@@ -39,23 +39,23 @@ const useNewsQuery = () => {
 
   useEffect(() => {
     if (selectedCategory) {
-      // check if any category is clicked
+   
       fetchNewsData("category", selectedCategory);
     } else if (searchTerm) {
-      // check any keyword is in the search bar
+   
       fetchNewsData("search", searchTerm);
     } else {
       fetchNewsData();
     }
   }, [selectedCategory, searchTerm]);
 
-  // Remove duplicate articles based on title
+
   const uniqueNews = news.filter(
     (item, index, self) =>
       index === self.findIndex((i) => i.title === item.title)
   );
 
-  // Determine sidebar and feature allocation based on news count
+
   let featureNews = null;
   let rightSidebarNews = null;
   let leftSidebarNews = [];
